@@ -1,24 +1,40 @@
-import React, { createContext, useMemo, useState, useContext, ReactNode } from "react";
+import React, {
+  createContext,
+  useMemo,
+  useState,
+  useContext,
+  ReactNode,
+} from "react";
 import noop from "lodash/noop";
 
 type MenuIds = "first" | "second" | "last";
 type Menu = { id: MenuIds; title: string };
-type SelectedMenu = { id: MenuIds };
 
-type MenuSelected = {
-  selectedMenu: SelectedMenu;
-};
-
+type MenuSelected = { selectedMenu: SelectedMenu };
 type MenuAction = {
-  onSelectedMenu: (selectedMenu: SelectedMenu) => void;
+  onSelectedMenu: (menu: SelectedMenu) => void;
 };
+type SelectedMenu = {
+  id: MenuIds;
+};
+
+const MenuSelectedContext = createContext<MenuSelected>({
+  selectedMenu: { id: "first" },
+});
+
+
+const MenuActionContext = createContext<MenuAction>({
+  onSelectedMenu: noop,
+});
 
 type PropsProvider = {
-  children: ReactNode;
+  children: ReactNode; 
 };
 
 function MenuProvider({ children }: PropsProvider) {
-  const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>({ id: "first" });
+  const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>({
+    id: "first",
+  });
 
   const menuContextAction = useMemo(
     () => ({
@@ -44,7 +60,7 @@ function MenuProvider({ children }: PropsProvider) {
 }
 
 type PropsMenu = {
-  menus: Menu[];
+  menus: Menu[]; 
 };
 
 function MenuComponent({ menus }: PropsMenu) {
@@ -85,11 +101,3 @@ export function ComponentApp() {
     </MenuProvider>
   );
 }
-
-const MenuSelectedContext = createContext<MenuSelected>({
-  selectedMenu: { id: "first" },
-});
-
-const MenuActionContext = createContext<MenuAction>({
-  onSelectedMenu: noop,
-});

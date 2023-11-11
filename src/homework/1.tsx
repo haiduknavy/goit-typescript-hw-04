@@ -1,14 +1,14 @@
-import React, { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 
-type ObserverProps = {
+interface IObserverProps {
   children: ReactNode;
-  onContentEndVisible: () => void;
-};
-
-export function Observer({ children, onContentEndVisible }: ObserverProps) {
-  const endContentRef = useRef<HTMLDivElement | null>(null);
+  onContentEndVisible(): void;
+}
+export function Observer({ children, onContentEndVisible }: IObserverProps) {
+  const endContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+
     const options: IntersectionObserverInit = {
       rootMargin: "0px",
       threshold: 1.0,

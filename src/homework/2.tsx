@@ -1,17 +1,16 @@
 import React, { useReducer } from "react";
 
-type RequestStep = "idle" | "start" | "pending" | "finished";
-
 type State = {
   isRequestInProgress: boolean;
-  requestStep: RequestStep;
+  requestStep: "start" | "pending" | "finished" | "idle";
 };
-
-type Action =
-  | { type: "START_REQUEST" }
-  | { type: "PENDING_REQUEST" }
-  | { type: "FINISH_REQUEST" }
-  | { type: "RESET_REQUEST" };
+type Action = {
+  type:
+    | "START_REQUEST"
+    | "PENDING_REQUEST"
+    | "FINISH_REQUEST"
+    | "RESET_REQUEST";
+};
 
 const initialState: State = {
   isRequestInProgress: false,
@@ -41,10 +40,8 @@ export function RequestComponent() {
 
   const startRequest = () => {
     requestDispatch({ type: "START_REQUEST" });
-    // Імітуємо запит до сервера
     setTimeout(() => {
       requestDispatch({ type: "PENDING_REQUEST" });
-      // Імітуємо отримання відповіді від сервера
       setTimeout(() => {
         requestDispatch({ type: "FINISH_REQUEST" });
       }, 2000);
